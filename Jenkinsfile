@@ -1,6 +1,3 @@
-environment {
-    MAVEN_HOME = tool 'Maven'
-}
 pipeline {
   agent {
     label 'king'
