@@ -1,3 +1,6 @@
+environment {
+    MAVEN_HOME = tool 'Maven'
+}
 pipeline {
   agent {
     label 'king'
@@ -11,8 +14,13 @@ pipeline {
     }
     stage('build') {
       steps {
-        sh 'mvn --version'
-        sh 'mvn clean install'
+        sh '${MAVEN_HOME}/bin/mvn clean package'
+      }
+    }
+    stage('Run Locally') {
+      steps {
+        sh '${MAVEN_HOME}/bin/mvn clean package'
+        sh 'java -jar target/bus-booking.jar &'
       }
     }
      stage('deploy') {
