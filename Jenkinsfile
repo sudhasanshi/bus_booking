@@ -1,4 +1,3 @@
-properties([parameters([choice(choices: 'test\ndeploy', name: 'baranch')])])
 pipeline {
   agent {
     label 'king'
