@@ -21,6 +21,7 @@ pipeline {
       steps {
         sh '${MAVEN_HOME}/bin/mvn clean package'
         sh 'java -jar target/bus-booking.jar &'
+          sleep 30
       }
     }
      stage('deploy') {
