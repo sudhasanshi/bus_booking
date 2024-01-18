@@ -16,7 +16,7 @@ pipeline {
     }
     stage('Run Locally') {
       steps {
-        sh 'java -jar target/bus-booking.jar &'
+        sh 'java -jar target/bus-booking-app-1.0-SNAPSHOT.jar &'
           sleep 30
       }
     }
