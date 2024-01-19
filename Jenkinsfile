@@ -51,10 +51,10 @@ pipeline {
         stage('Publish build info') {
             steps {
                 script {
-            // For my understanding to publish build info
+		    // For my understanding to publish build info
                     rtPublishBuildInfo serverId: "Artifact"
-                       }
-                }
+                }
             }
-        }
-    }
+        }
+    }
+}
