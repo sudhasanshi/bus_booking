@@ -11,7 +11,7 @@ pipeline {
             }
         }
 
-        stage('build') {
+        stage('Build') {
             steps {
                 script {
                     sh 'mvn --version'
@@ -19,25 +19,37 @@ pipeline {
                 }
             }
         }
-        
-        stage("SonarQube analysis") {
-            steps {
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn clean package sonar:sonar'
-              }
-            }
-        }
 
-        stage('Run JAR Locally') {
+        stage('Deploy to JFrog Artifactory') {
             steps {
+               // Remember this is the step which I followed for free style project.
                 script {
-                    // Run the JAR file using java -jar
-                    sh "nohup timeout 10s java -jar target/bus-booking-app-1.0-SNAPSHOT.jar > output.log 2>&1 &"
-                    // Sleep for a while to allow the application to start (adjust as needed)
-                    sleep 10
+                    rtServer(
+                        id: "Artifact",
+                        url: "http://15.206.84.167:8082/artifactory",
+                        username: "admin",
+                        password: "Sanvi67@22"
+                    )
                 }
             }
         }
+
+        stage('Upload') {
+            steps {
+                script {
+		// For my  undertanding rtUpload is a part of jFrog Artifactory plugin to upload artifacts to artifacts repo
+                    rtUpload (
+                        serverId: 'Artifact',
+                        spec: '''{
+                            "files": [
+                                {
+                                    "pattern": "target/*.war",
+                                    "target": "libs-release-local/"
+                                }
+                            ]
+                        }'''
+                    )
+                }
         
         stage('deploy') {
             steps {
@@ -46,14 +58,5 @@ pipeline {
             }
         }
         
-    }
-        
-    post {
-        success {
-            echo "Build, Run, and Deployment to Tomcat successful!"
-        }
-        failure {
-            echo "Build, Run, and Deployment to Tomcat failed!"
-        }
     }
 }
