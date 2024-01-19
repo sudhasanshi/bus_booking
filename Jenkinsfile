@@ -40,25 +40,25 @@ pipeline {
           // For my  undertanding rtUpload is a part of jFrog Artifactory plugin to upload artifacts to artifacts repo
           rtUpload(
             serverId: 'Artifact',
-            spec: ''
-            '{
-            "files": [{
+            spec: '''{
+            "files": [
+	    {
               "pattern": "target/*.war",
               "target": "libs-release-local/"
-            }]
-          }
-          ''
-          '
-        )
-      }
-
-      stage('deploy') {
-        steps {
-          sh 'ssh root@172.31.3.184'
-          sh "scp /home/king/workspace/bus-booking-pipeline/target/bus-booking-app-1.0-SNAPSHOT.jar root@172.31.3.184:/opt/apache-tomcat-8.5.98/webapps/"
+            }
+	    ]
+	    }'''
+	    )
+	    }
+}
+}
+  stage('Publish build info') {
+            steps {
+                script {
+		    // For my understanding to publish build info
+                    rtPublishBuildInfo serverId: "Artifact"
+                }
+            }
         }
-      }
-
     }
-  }
 }
