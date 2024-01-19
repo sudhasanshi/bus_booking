@@ -2,6 +2,7 @@ pipeline {
     agent {
         label 'king'
     }
+
     stages {
         stage('checkout') {
             steps {
@@ -18,13 +19,12 @@ pipeline {
                 }
             }
         }
-
-        stage('Show Contents of target') {
+        
+        stage("SonarQube analysis") {
             steps {
-                script {
-                    // Print the contents of the target directory
-                    sh 'ls -l target'
-                }
+                withSonarQubeEnv('sonar') {
+                    sh 'mvn clean package sonar:sonar'
+              }
             }
         }
 
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 script {
                     // Run the JAR file using java -jar
-                    sh "nohup timeout 10s java -jar target/target/bus-booking-app-1.0-SNAPSHOT.jar > output.log 2>&1 &"
+                    sh "nohup timeout 10s java -jar target/bus-booking-app-1.0-SNAPSHOT.jar > output.log 2>&1 &"
                     // Sleep for a while to allow the application to start (adjust as needed)
                     sleep 10
                 }
