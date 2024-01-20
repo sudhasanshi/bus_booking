@@ -24,7 +24,7 @@ pipeline {
                         id: "Artifact",
                         url: "http://15.206.84.167:8082/artifactory",
                         username: "admin",
-                        password: "Sanvi67@22"
+                        password: "abc"
                     )
                 }
             }
