@@ -18,6 +18,7 @@ pipeline {
             }
         }
 		 stage('deploy') {
+		 agent { label 'sudha' }
             steps {
                 sh "cp /home/sudha/workspace/bus-booking/target/bus-booking-app-1.0-SNAPSHOT.jar /opt/apache-tomcat-8.5.98/webapps/"
             }
