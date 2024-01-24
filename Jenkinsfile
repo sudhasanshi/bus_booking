@@ -11,6 +11,8 @@ pipeline {
         stage('build') {
             steps {
                 script {
+                    sh 'apt update'
+                    sh 'apt install maven'
                     sh 'mvn clean install'
                 }
             }
